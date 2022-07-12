@@ -10,8 +10,6 @@ import os
 from main import DATAFOLDER 
 UPDIR = '..'
 
-print(DATAFOLDER)
-
 class SubjectData():
     def __init__(self, uniparkFile, nazcaFile, epocxFile):
         self.load_unipark(uniparkFile)
@@ -49,6 +47,7 @@ class SubjectData():
         print('############## EPOCX ##############')
         print("========> Loading EPOCX")
         raw_data = pd.read_csv(os.path.join(UPDIR, DATAFOLDER, epocxFile), delimiter=',').to_numpy()
+        print(raw_data)
         self.epocx_data = raw_data
         print("<======== Done.\n")
 
@@ -88,5 +87,13 @@ if __name__ == "__main__":
     sd = SubjectData(
         's1-20220602\s1_unipark_2022.06.03T15.37.21.xlsx',
         's1-20220602\s1_nazca_2022.06.02.csv',
-        's1-20220602\s1_EPOCX_160041_2022.06.02T15.37.21+02.00_intervalMarker.csv'
+        's1-20220602\s1_EPOCX_160041_2022.06.02T15.37.21+02.00.md.csv'
     )
+
+    print(sd.unipark_data)
+    print("\n\n")
+    print(sd.nazca_data)
+    print("\n\n")
+    print(sd.epocx_data[0])
+    print("\n\n")
+    print(sd)
