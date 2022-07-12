@@ -2,12 +2,14 @@
     Data model class for easy data extraction
 """
 
+from msilib.schema import Error
 import numpy as np
 import pandas as pd
 from matplotlib import pyplot as plt
 import os
 
-from main import DATAFOLDER 
+from config import DATAFOLDER 
+
 UPDIR = '..'
 
 class SubjectData():
@@ -46,8 +48,12 @@ class SubjectData():
     def load_epocx(self, epocxFile):
         print('############## EPOCX ##############')
         print("========> Loading EPOCX")
-        raw_data = pd.read_csv(os.path.join(UPDIR, DATAFOLDER, epocxFile), delimiter=',').to_numpy()
-        print(raw_data)
+        raw_data = pd.read_csv(os.path.join(UPDIR, DATAFOLDER, epocxFile), delimiter=',', header = 1, skiprows = range(1,2)).to_numpy()
+        
+        if(raw_data.shape[1] != 68):
+            print(raw_data)
+            raise ValueError("Unexpected EPOCX data shape. Expedted dimensions: (N, 68)")
+
         self.epocx_data = raw_data
         print("<======== Done.\n")
 
@@ -94,6 +100,6 @@ if __name__ == "__main__":
     print("\n\n")
     print(sd.nazca_data)
     print("\n\n")
-    print(sd.epocx_data[0])
+    print(sd.epocx_data)
     print("\n\n")
     print(sd)
