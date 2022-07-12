@@ -13,8 +13,10 @@ UPDIR = '..'
 print(DATAFOLDER)
 
 class SubjectData():
-    def __init__(self):
-        pass
+    def __init__(self, uniparkFile, nazcaFile, epocxFile):
+        self.load_unipark(uniparkFile)
+        self.load_nazca(nazcaFile)
+        self.load_epocx(epocxFile)
 
     def tag(self, raw_data):
         self.data       = raw_data
@@ -24,16 +26,31 @@ class SubjectData():
         self.Edulevel   = raw_data[10]
 
     def load_unipark(self, uniparkFilename):
+        print('############## Unipark ##############')
+        print("========> Loading unipark")
         raw_data = pd.read_excel(os.path.join(UPDIR, DATAFOLDER, uniparkFilename)).to_numpy()
-        print('############## Loaded ##############')
-        print('# Unipark data:')
-        print(raw_data[0])
 
-        self.data       = raw_data[0]
-        self.ID         = raw_data[0][7]
-        self.Gender     = raw_data[0][8]
-        self.Age        = raw_data[0][9]
-        self.Edulevel   = raw_data[0][10]
+        self.unipark_data   = raw_data[0]
+        self.ID             = raw_data[0][7]
+        self.Gender         = raw_data[0][8]
+        self.Age            = raw_data[0][9]
+        self.Edulevel       = raw_data[0][10]
+
+        print("<======== Done.\n")
+
+    def load_nazca(self, nazcaFilename):
+        print('############## Nazca ##############')
+        print("========> Loading nazca")
+        raw_data = pd.read_csv(os.path.join(UPDIR, DATAFOLDER, nazcaFilename), delimiter=';').to_numpy()
+        self.nazca_data = raw_data
+        print("<======== Done.\n")
+
+    def load_epocx(self, epocxFile):
+        print('############## EPOCX ##############')
+        print("========> Loading EPOCX")
+        raw_data = pd.read_csv(os.path.join(UPDIR, DATAFOLDER, epocxFile), delimiter=',').to_numpy()
+        self.epocx_data = raw_data
+        print("<======== Done.\n")
 
 class ExportData():
     def __init__(self):
@@ -65,5 +82,11 @@ class ExportData():
 
 if __name__ == "__main__":
     #SubjectData().load_unipark('s1-20220602\s1_unipark_2022.06.03T15.37.21.xlsx')
-    data = ExportData.load_export('export.xlsx')
-    print(data[1].ID)
+    #data = ExportData.load_export('export.xlsx')
+    #print(data[1].ID)
+
+    sd = SubjectData(
+        's1-20220602\s1_unipark_2022.06.03T15.37.21.xlsx',
+        's1-20220602\s1_nazca_2022.06.02.csv',
+        's1-20220602\s1_EPOCX_160041_2022.06.02T15.37.21+02.00_intervalMarker.csv'
+    )
